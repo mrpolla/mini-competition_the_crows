@@ -16,10 +16,7 @@ def load_data():
     df_train_X['train'] = 1
     df_test_X['train'] = 0
     df_X = pd.concat([df_train_X, df_test_X], ignore_index=True)
-    print(df_X.shape)
-    print(df_test_X.shape)
     df = pd.merge(df_X, df_train_y, on='building_id', how='left')
-    print(df.shape)
 
     assert df.shape[0]==nrows_tot, "Incorrect number of rows"
     assert isinstance(df, pd.DataFrame), "No pandas dataframe returned"
