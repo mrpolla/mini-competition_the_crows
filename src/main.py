@@ -18,13 +18,15 @@ def run_pipeline():
 
   #3. Training
   model = create_model(df)
-
+  #assert is Model?
+  
   #4. Predict
   pred = predict(model, df)
+  assert isinstance(pred, pd.DataFrame)  
 
   #5. Write CSV
   outputh_path = ""
-  write_csv(pred, outputh_path)
+  write_CSV(pred, outputh_path)
 
   print("Script finished")
 
