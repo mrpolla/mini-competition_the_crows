@@ -1,6 +1,7 @@
 import pandas as pd
 from preprocessing.encoding import target_encoding
 from modeling.train import create_model_simple
+from modeling.train import create_model_lightgbm
 from modeling.predict import predict
 from data_handler.data_handler import write_data, load_data
 import os
