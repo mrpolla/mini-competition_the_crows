@@ -3,18 +3,16 @@ import pandas as pd
 
 # # 2nd try encoding categorical_columns: Onehot encoding 
 def onehot_encode_features(df, categorical_columns):
-    """
-    One-Hot Encoding on categorical features.
-
-    Returns:
-    pd.DataFrame: The dataframe with one-hot encoded categorical features.
-    """
     return pd.get_dummies(df, columns=categorical_columns, drop_first=True)
-
 # Apply one-hot encoding to the dataframe
 encoded_df = onehot_encode_features(df, categorical_columns)
 print(encoded_df.columns)
 print(f'Total number of columns after encoding: {len(encoded_df.columns)}')
+
+
+# possible Assert?!:
+# for col in categorical_columns:
+#         assert col not in encoded_df.columns, f"Error: {col} is still in the dataframe after encoding."
 
 
 
