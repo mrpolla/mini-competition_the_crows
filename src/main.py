@@ -3,9 +3,13 @@ from preprocessing.encoding import drop_categorical_features
 from modeling.train import create_model
 from modeling.predict import predict
 from data_handler.data_handler import write_data, load_data
+import os
 
 #main pipeline
 def run_pipeline():
+
+  os.chdir(os.path.dirname(os.path.abspath(__file__)))
+  print(os.getcwd())
 
   #1. Load CSV and Format
   print("Starting load_data...")

@@ -12,7 +12,7 @@ def predict(model, df):
 
   df_pred = pd.DataFrame({
     'building_id': df_test['building_id'],
-    'damage_grade': y_pred
+    'damage_grade': [int(i)+1 for i in y_pred]
   })
   
   assert isinstance(df_pred, pd.DataFrame)
