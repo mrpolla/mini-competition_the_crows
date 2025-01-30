@@ -8,7 +8,6 @@ def create_model(df):
   df_train = df[df['train']==1]
   y_train = df_train['damage_grade']
   y_train = y_train - 1 
-  print(y_train)
 
   X_train = df_train.drop('damage_grade', axis=1)
 

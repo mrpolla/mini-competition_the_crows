@@ -177,6 +177,7 @@ cython_debug/
 #.idea/
 
 msk_*
+*.csv
 
 # PyPI configuration file
 .pypirc
