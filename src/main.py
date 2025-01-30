@@ -1,5 +1,5 @@
 import pandas as pd
-from preprocessing.encoding import drop_categorical_features
+from preprocessing.encoding import onehot_encode_features
 from modeling.train import create_model
 from modeling.predict import predict
 from data_handler.data_handler import write_data, load_data
@@ -17,9 +17,9 @@ def run_pipeline():
   print("load_data done!")
 
   #2. Encoding
-  print("Starting drop_categorical_features...")
-  df = drop_categorical_features(df)
-  print("drop_categorical_features done!")
+  print("Starting onehot_encode_features...")
+  df = onehot_encode_features(df)
+  print("onehot_encode_features done!")
 
   #3. Training
   print("Starting create_model...")
