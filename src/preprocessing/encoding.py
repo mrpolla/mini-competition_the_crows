@@ -8,10 +8,6 @@ def convert_numerical_to_categorical(df):
         df[col] = df[col].astype(str)  # Convert to string (categorical)
     return df
 
-df = convert_numerical_to_categorical(df)
-
-
-
 
 import pandas as pd
 
