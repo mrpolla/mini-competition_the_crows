@@ -1,11 +1,29 @@
 
 import pandas as pd
 
-def drop_categorical_features(df):
-    # Detect categorical columns
-    categorical_cols = df.select_dtypes(include=['object', 'category']).columns
+# # 2nd try encoding categorical_columns: Onehot encoding 
+def onehot_encode_features(df, categorical_columns):
+    """
+    One-Hot Encoding on categorical features.
 
-    assert isinstance(df, pd.DataFrame)  
+    Returns:
+    pd.DataFrame: The dataframe with one-hot encoded categorical features.
+    """
+    return pd.get_dummies(df, columns=categorical_columns, drop_first=True)
 
-    # Drop categorical columns
-    return df.drop(columns=categorical_cols)
+# Apply one-hot encoding to the dataframe
+encoded_df = onehot_encode_features(df, categorical_columns)
+print(encoded_df.columns)
+print(f'Total number of columns after encoding: {len(encoded_df.columns)}')
+
+
+
+# 1st try encoding categorical_columns: droping 
+# def drop_categorical_features(df):
+#     # Detect categorical columns
+#     categorical_cols = df.select_dtypes(include=['object', 'category']).columns
+
+#     assert isinstance(df, pd.DataFrame)  
+
+#     # Drop categorical columns
+#     return df.drop(columns=categorical_cols)
