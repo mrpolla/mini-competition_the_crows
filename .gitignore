@@ -3,14 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-
-
-
-
-
+.vscode
+notebooks/test/*
 .DS_Store
 *.csv
-
 
 # C extensions
 *.so
