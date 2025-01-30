@@ -1,11 +1,12 @@
 import pandas as pd
+import os
 
 def load_data():
-
+    print(os.getcwd())
     try:
-        df_train_X = pd.read_csv('../data/raw/train_values.csv')
-        df_train_y = pd.read_csv('../data/raw/train_labels.csv')
-        df_test_X = pd.read_csv('../data/raw/test_values.csv')
+        df_train_X = pd.read_csv('./data/raw/train_values.csv')
+        df_train_y = pd.read_csv('./data/raw/train_labels.csv')
+        df_test_X = pd.read_csv('./data/raw/test_values.csv')
     except FileNotFoundError:
         print("Error: File not found. Please check the file path.")
 
