@@ -1,6 +1,6 @@
 import pandas as pd
-from preprocessing.encoding import onehot_encode_features
-from modeling.train import create_model
+from preprocessing.encoding import target_encoding
+from modeling.train import create_model_simple
 from modeling.predict import predict
 from data_handler.data_handler import write_data, load_data
 import os
@@ -18,12 +18,13 @@ def run_pipeline():
 
   #2. Encoding
   print("Starting onehot_encode_features...")
-  df = onehot_encode_features(df)
+  #df = onehot_encode_features(df)
+  df = target_encoding(df)
   print("onehot_encode_features done!")
 
   #3. Training
   print("Starting create_model...")
-  model = create_model(df)
+  model = create_model_lightgbm(df)
   print("create_model done!")
   
   #4. Predict
