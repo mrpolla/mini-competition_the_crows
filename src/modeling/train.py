@@ -1,22 +1,21 @@
 import pandas as pd
-from xgboost import XGBClassifier
+import xgboost as xgb
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
-def create_model(df):
+def create_model_with_CV(df):
   #1. get train data set
   df_train = df[df['train']==1]
   temp_y_train = df_train['damage_grade']
   temp_y_train = temp_y_train - 1 
-  print(temp_y_train)
   temp_X_train = df_train.drop('damage_grade', axis=1)
 
   X_train, X_test, y_train, y_test = train_test_split(temp_X_train, temp_y_train, test_size=0.2, random_state=42)
 
   # Set XGBoost parameters for hypertuning
   param_grid = {
-    'n_estimators': [100, 200, 300],        # Number of boosting rounds
+    'n_estimators': [100, 200, 300],         # Number of boosting rounds
     'learning_rate': [0.01, 0.05, 0.1, 0.2], # Step size shrinkage
     'max_depth': [3, 5, 7],                  # Maximum depth of trees
     'min_child_weight': [1, 3, 5],           # Minimum sum of instance weight in a child
@@ -28,7 +27,7 @@ def create_model(df):
   }
 
   # Define XGBoost model for multi-class classification
-  xgb = XGBClassifier(objective='multi:softmax', num_class=len(set(y_train)))
+  xgb = xgb.XGBClassifier(objective='multi:softmax', num_class=len(set(y_train)))
   
   # Perform Grid Search
   grid_search = GridSearchCV(estimator=xgb, param_grid=param_grid, cv=3, scoring='accuracy', verbose=1, n_jobs=-1)
@@ -43,11 +42,19 @@ def create_model(df):
 
   return best_model
 
-'''
+def create_model_simple(df):
+  #1. get train data set
+  df_train = df[df['train']==1]
+  y_train = df_train['damage_grade']
+  y_train = y_train - 1 
+
+  X_train = df_train.drop('damage_grade', axis=1)
+
   # Convert data into DMatrix (XGBoost's optimized data structure)
   dtrain = xgb.DMatrix(X_train, label=y_train)
-    
-    params = {
+
+  # Set XGBoost parameters
+  params = {
       'objective': 'multi:softmax',  # Use 'multi:softprob' for probabilities
       'num_class': 3,  # Number of unique classes (1, 2, 3)
       'eval_metric': 'mlogloss',
@@ -60,4 +67,3 @@ def create_model(df):
   bst = xgb.train(params, dtrain, num_round)
 
   return bst
-'''
