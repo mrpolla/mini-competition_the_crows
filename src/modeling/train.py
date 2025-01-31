@@ -43,12 +43,12 @@ def create_model_lightgbm(df):
 
 def objective(trial, X_train, X_test, y_train, y_test):
     params = {
-        "n_estimators": trial.suggest_int("n_estimators", 100, 200),  # Boosting rounds
-        "learning_rate": trial.suggest_loguniform("learning_rate", 0.01, 0.3),  # Tuning learning rate
-        "num_leaves": trial.suggest_int("num_leaves", 20, 150, step=10),  # Tuning number of leaves
-        "max_depth": trial.suggest_int("max_depth", 3, 10),  # Tuning max depth
+        "n_estimators": trial.suggest_int("n_estimators", 100, 500),  # Boosting rounds
+        "learning_rate": trial.suggest_loguniform("learning_rate", 0.005, 0.3),  # Tuning learning rate
+        "num_leaves": trial.suggest_int("num_leaves", 20, 200, step=10),  # Tuning number of leaves
+        "max_depth": trial.suggest_int("max_depth", 3, 15),  # Tuning max depth
         "min_child_samples": 20,  # Fixed for simplicity, you can tune if needed
-        "subsample": trial.suggest_uniform("subsample", 0.7, 1.0),  # Fraction of samples to use for each tree
+        "subsample": trial.suggest_uniform("subsample", 0.5, 1.0),  # Fraction of samples to use for each tree
         "colsample_bytree": 0.8  # Fixed for simplicity
     }
     
