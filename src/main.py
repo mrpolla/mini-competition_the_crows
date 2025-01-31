@@ -1,6 +1,6 @@
 import pandas as pd
 from preprocessing.encoding import *
-from modeling.train import create_model_simple
+from modeling.train import *
 from modeling.predict import predict
 from data_handler.data_handler import write_data, load_data
 import os
@@ -23,7 +23,7 @@ def run_pipeline():
 
   #3. Training
   print("Training model...", end=" ")
-  model = create_model_simple(df)
+  model = create_model_lightgbm(df)
   print("DONE")
   
   #4. Predict
