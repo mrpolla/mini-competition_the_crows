@@ -2,6 +2,7 @@
 import pandas as pd
 
 def do_encoding(df):
+    df = clean_01(df)
     df = convert_numerical_to_categorical(df)
     df = target_encoding(df)
     return df
@@ -48,3 +49,7 @@ def target_encoding(df):
     df_encoded = encode_combination(df_encoded, 'has_secondary_use', target_col, 'secondary_usage t-enc')
 
     return df_encoded
+
+def clean_01(df):
+  df = df[df["height_percentage"] <= 18 ] # Drop rows where ‘height_percentage’ is above 18
+  return df
