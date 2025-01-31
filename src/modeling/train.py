@@ -13,7 +13,7 @@ def create_model_lightgbm(df):
   temp_y_train = df_train['damage_grade']
   temp_y_train = temp_y_train - 1 
   print(temp_y_train)
-  temp_X_train = df_train.drop('damage_grade', axis=1)
+  temp_X_train = df_train.drop(['building_id', 'damage_grade'], axis=1)
 
   X_train, X_test, y_train, y_test = train_test_split(temp_X_train, temp_y_train, test_size=0.2, random_state=42)
 
