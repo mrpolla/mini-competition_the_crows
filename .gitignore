@@ -10,7 +10,7 @@ __pycache__/
 
 .DS_Store
 *.csv
-
+lgbm_model.txt
 
 # C extensions
 *.so
