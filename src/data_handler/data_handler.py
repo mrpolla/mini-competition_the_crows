@@ -25,7 +25,6 @@ def load_data():
 def write_data(df):
     try:
         df.to_csv('../data/processed/submission.csv', index=False)
-        print(f"File written")
-    except Exception as e:
-        print(f"Error: Could not write file: {e}")
+    except:
+        print("Error: Could not write file.")
     pass

@@ -24,21 +24,17 @@ def target_encoding(df):
     
     categorical_cols = df.select_dtypes(include=['object', 'category']).columns
     for col in categorical_cols:
-        # Compute mean target for each category
         mean_target_if_present = df.groupby(col)[target_col].transform('mean')
-        # Apply encoding
-        df_encoded[col] = mean_target_if_present.values.flatten()
+        df_encoded[f"{col} t-enc"] = mean_target_if_present.values.flatten()
+    df_encoded = df_encoded.drop(columns=categorical_cols)
     
-    material_cols = df_encoded.filter(like='has_superstructure_').columns
-    df_encoded['material_combination'] = df_encoded[material_cols].astype(str).agg(''.join, axis=1)
-    mean_target_per_combination = df_encoded.groupby('material_combination')[target_col].transform('mean')
-    df_encoded['structure_encoded'] = mean_target_per_combination
+    def encode_combination(col_prefix, target_col, new_col_name):
+        cols = df_encoded.filter(like=col_prefix).columns
+        df_encoded[new_col_name] = df_encoded[cols].astype(str).agg(''.join, axis=1)
+        df_encoded[new_col_name] = df_encoded.groupby(new_col_name)[target_col].transform('mean')
+        return df_encoded.drop(columns=list(cols))
 
-    usage_cols = df_encoded.filter(like='has_secondary_use_').columns
-    df_encoded['usage_combination'] = df_encoded[usage_cols].astype(str).agg(''.join, axis=1)
-    mean_target_per_combination = df_encoded.groupby('usage_combination')[target_col].transform('mean')
-    df_encoded['usage_encoded'] = mean_target_per_combination
-    
-    df_encoded = df_encoded.drop(columns=['material_combination','usage_combination']+list(material_cols)+list(usage_cols))
+    df_encoded = encode_combination('has_superstructure_', target_col, 'structure_encoded')
+    df_encoded = encode_combination('has_secondary_use', target_col, 'usage_encoded')
         
     return df_encoded
