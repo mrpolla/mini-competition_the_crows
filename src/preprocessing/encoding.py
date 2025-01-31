@@ -21,20 +21,30 @@ def onehot_encode_features(df):
 def target_encoding(df):
     target_col = 'damage_grade'
     df_encoded = df.copy()
-    
+
+    # Encode categorical columns
     categorical_cols = df.select_dtypes(include=['object', 'category']).columns
     for col in categorical_cols:
-        mean_target_if_present = df.groupby(col)[target_col].transform('mean')
-        df_encoded[f"{col} t-enc"] = mean_target_if_present.values.flatten()
-    df_encoded = df_encoded.drop(columns=categorical_cols)
-    
-    def encode_combination(col_prefix, target_col, new_col_name):
-        cols = df_encoded.filter(like=col_prefix).columns
-        df_encoded[new_col_name] = df_encoded[cols].astype(str).agg(''.join, axis=1)
-        df_encoded[new_col_name] = df_encoded.groupby(new_col_name)[target_col].transform('mean')
-        return df_encoded.drop(columns=list(cols))
+        df_encoded[f"{col} t-enc mean"] = df.groupby(col)[target_col].transform('mean')
+        df_encoded[f"{col} t-enc std"] = df.groupby(col)[target_col].transform('std')
 
-    df_encoded = encode_combination('has_superstructure_', target_col, 'structure_encoded')
-    df_encoded = encode_combination('has_secondary_use', target_col, 'usage_encoded')
+    df_encoded.drop(columns=categorical_cols, inplace=True, errors='ignore')  # Drop safely
+
+    # Function for encoding binary combinations
+    def encode_combination(df, col_prefix, target_col, new_col_name):
+        df_local = df.copy()
+        cols = df_local.filter(like=col_prefix).columns
         
+        if len(cols) == 0:  # If no matching columns, return original dataframe
+            return df_local
+
+        combination_key = df_local[cols].astype(str).agg(''.join, axis=1)
+        df_local[f"{new_col_name} mean"] = combination_key.map(df_local.groupby(combination_key)[target_col].transform('mean'))
+        df_local[f"{new_col_name} std"] = combination_key.map(df_local.groupby(combination_key)[target_col].transform('std'))
+
+        return df_local.drop(columns=cols)
+
+    df_encoded = encode_combination(df_encoded, 'has_superstructure', target_col, 'superstructure t-enc')
+    df_encoded = encode_combination(df_encoded, 'has_secondary_use', target_col, 'secondary_usage t-enc')
+
     return df_encoded
