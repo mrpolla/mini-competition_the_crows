@@ -2,7 +2,7 @@
 import pandas as pd
 
 def do_encoding(df):
-    df = clean_01(df)
+#    df = clean_01(df)
     df = convert_numerical_to_categorical(df)
     df = target_encoding(df)
     return df
@@ -51,5 +51,5 @@ def target_encoding(df):
     return df_encoded
 
 def clean_01(df):
-  df = df[df["height_percentage"] <= 18 ] # Drop rows where ‘height_percentage’ is above 18
+  df = df[(df["height_percentage"] <= 18) & (df["train"] == 1)] # Drop rows from training set where ‘height_percentage’ is above 18
   return df
